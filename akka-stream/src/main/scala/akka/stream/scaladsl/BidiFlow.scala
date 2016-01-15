@@ -3,6 +3,7 @@
  */
 package akka.stream.scaladsl
 
+import akka.NotUsed
 import akka.stream._
 import akka.stream.impl.StreamLayout.Module
 import akka.stream.impl.Timers
@@ -211,14 +212,14 @@ object BidiFlow {
    *
    */
   def fromFlows[I1, O1, I2, O2, M1, M2](flow1: Graph[FlowShape[I1, O1], M1],
-                                        flow2: Graph[FlowShape[I2, O2], M2]): BidiFlow[I1, O1, I2, O2, Unit] =
+                                        flow2: Graph[FlowShape[I2, O2], M2]): BidiFlow[I1, O1, I2, O2, NotUsed] =
     fromFlowsMat(flow1, flow2)(Keep.none)
 
   /**
    * Create a BidiFlow where the top and bottom flows are just one simple mapping
    * stage each, expressed by the two functions.
    */
-  def fromFunctions[I1, O1, I2, O2](outbound: I1 ⇒ O1, inbound: I2 ⇒ O2): BidiFlow[I1, O1, I2, O2, Unit] =
+  def fromFunctions[I1, O1, I2, O2](outbound: I1 ⇒ O1, inbound: I2 ⇒ O2): BidiFlow[I1, O1, I2, O2, NotUsed] =
     fromFlows(Flow[I1].map(outbound), Flow[I2].map(inbound))
 
   /**
@@ -230,6 +231,6 @@ object BidiFlow {
    * every second in one direction, but no elements are flowing in the other direction. I.e. this stage considers
    * the *joint* frequencies of the elements in both directions.
    */
-  def bidirectionalIdleTimeout[I, O](timeout: FiniteDuration): BidiFlow[I, I, O, O, Unit] =
+  def bidirectionalIdleTimeout[I, O](timeout: FiniteDuration): BidiFlow[I, I, O, O, NotUsed] =
     fromGraph(new Timers.IdleTimeoutBidi(timeout))
 }
