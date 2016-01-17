@@ -364,8 +364,8 @@ trait GraphInterpreterSpecKit extends AkkaSpec {
       events
     }
 
-    class UpstreamOneBoundedProbe[T] extends UpstreamBoundaryStageLogic[T] {
-      val out = Outlet[T]("out")
+    class UpstreamOneBoundedProbe[TT] extends UpstreamBoundaryStageLogic[TT] {
+      val out = Outlet[TT]("out")
       out.id = 0
 
       setHandler(out, new OutHandler {
@@ -377,7 +377,7 @@ trait GraphInterpreterSpecKit extends AkkaSpec {
         override def onDownstreamFinish(): Unit = lastEvent += Cancel
       })
 
-      def onNext(elem: T): Unit = {
+      def onNext(elem: TT): Unit = {
         push(out, elem)
         run()
       }
@@ -386,7 +386,7 @@ trait GraphInterpreterSpecKit extends AkkaSpec {
         run()
       }
 
-      def onNextAndComplete(elem: T): Unit = {
+      def onNextAndComplete(elem: TT): Unit = {
         push(out, elem)
         complete(out)
         run()
@@ -398,8 +398,8 @@ trait GraphInterpreterSpecKit extends AkkaSpec {
       }
     }
 
-    class DownstreamOneBoundedPortProbe[T] extends DownstreamBoundaryStageLogic[T] {
-      val in = Inlet[T]("in")
+    class DownstreamOneBoundedPortProbe[TT] extends DownstreamBoundaryStageLogic[TT] {
+      val in = Inlet[TT]("in")
       in.id = 0
 
       setHandler(in, new InHandler {
