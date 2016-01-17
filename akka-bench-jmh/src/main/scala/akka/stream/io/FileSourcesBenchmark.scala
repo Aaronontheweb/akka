@@ -63,7 +63,7 @@ class FileSourcesBenchmark {
 
   @TearDown
   def shutdown() {
-    system.shutdown()
+    system.terminate()
     system.awaitTermination()
   }
 

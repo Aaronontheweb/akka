@@ -46,7 +46,7 @@ object TestServer extends App {
     println("Press RETURN to stop...")
     Console.readLine()
   } finally {
-    system.shutdown()
+    system.terminate()
   }
 
   ////////////// helpers //////////////

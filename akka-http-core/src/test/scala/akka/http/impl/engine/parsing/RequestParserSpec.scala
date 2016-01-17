@@ -433,7 +433,7 @@ class RequestParserSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
     }
   }
 
-  override def afterAll() = system.shutdown()
+  override def afterAll() = system.terminate()
 
   private class Test {
     def awaitAtMost: FiniteDuration = 250.millis

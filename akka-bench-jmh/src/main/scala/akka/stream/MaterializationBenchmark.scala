@@ -96,7 +96,7 @@ class MaterializationBenchmark {
 
   @TearDown
   def shutdown() {
-    system.shutdown()
+    system.terminate()
     system.awaitTermination()
   }
 
