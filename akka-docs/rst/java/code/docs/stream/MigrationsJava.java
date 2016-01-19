@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 import java.nio.charset.Charset;
 
 public class MigrationsJava {
@@ -255,6 +257,14 @@ public class MigrationsJava {
       StreamConverters.asInputStream(timeout);
     //#output-input-stream-source-sink
 
+    //#expand-continually
+    Flow.of(Integer.class).expand(in -> Stream.iterate(in, i -> i).iterator());
+    //#expand-continually
+    //#expand-state
+    Flow.of(Integer.class).expand(in ->
+        Stream.iterate(new Pair<>(in, 0),
+                       p -> new Pair<>(in, p.second() + 1)).iterator());
+    //#expand-state
   }
 
 }

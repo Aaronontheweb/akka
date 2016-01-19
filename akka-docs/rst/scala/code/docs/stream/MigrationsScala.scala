@@ -277,6 +277,19 @@ class MigrationsScala extends AkkaSpec {
 
         val someOtherInputStreamSink = StreamConverters.asInputStream(timeout)
         //#output-input-stream-source-sink
+
+        //#expand-continually
+        Flow[Int].expand(Iterator.continually(_))
+        //#expand-continually
+        //#expand-state
+        Flow[Int].expand(i => {
+          var state = 0
+          Iterator.continually({
+            state += 1
+            (i, state)
+          })
+        })
+        //#expand-state
       }
     }
   }
